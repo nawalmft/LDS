@@ -26,14 +26,18 @@ class LessonPerformanceEvaluationResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('course_criteria_id')
-                    ->required()
-                    ->label('رقم معيار الدورة')
-                    ->numeric(),
-                Forms\Components\TextInput::make('lesson_id')
-                    ->required()
-                    ->label('رقم الدرس')
-                    ->numeric(),
+                Forms\Components\Select::make('course_criteria_id')
+                    ->label(' معيار الدورة')
+                    ->options(function () {
+                        return \App\Models\CoursePerformanceCriteria::all()->pluck('criteria', 'id');
+                    })
+                    ->required(),
+                Forms\Components\Select::make('lesson_id')
+                    ->label(' الدرس')
+                    ->options(function () {
+                        return \App\Models\Lesson::all()->pluck('title', 'id');
+                    })
+                    ->required(),
                 Forms\Components\TextInput::make('grade')
                     ->required()
                     ->label('الدرجة')
@@ -45,13 +49,13 @@ class LessonPerformanceEvaluationResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('course_criteria_id')
+                Tables\Columns\TextColumn::make('course_criteria_id.criteria')
                     ->numeric()
-                    ->label('رقم معيار الدورة')
+                    ->label(' معيار الدورة')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('lesson_id')
+                Tables\Columns\TextColumn::make('lesson_id.title')
                     ->numeric()
-                    ->label('رقم الدرس')
+                    ->label(' الدرس')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('grade')
                     ->numeric()

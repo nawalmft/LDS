@@ -26,14 +26,19 @@ class TestQuestionResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('question_id')
-                    ->required()
-                    ->label('رقم السؤال')
-                    ->numeric(),
-                Forms\Components\TextInput::make('test_id')
-                    ->required()
-                    ->label('رقم الاختبار')
-                    ->numeric(),
+                Forms\Components\Select::make('question_id')
+                    ->label(' السؤال')
+                    ->options(function () {
+                        return \App\Models\Question::all()->pluck('question', 'id');
+                    })
+                    ->required(),
+
+                Forms\Components\Select::make('test_id')
+                    ->label(' الاختبار')
+                    ->options(function () {
+                        return \App\Models\Test::all()->pluck('id', 'id');
+                    })
+                    ->required(),
             ]);
     }
 
@@ -41,14 +46,15 @@ class TestQuestionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('question_id')
+                Tables\Columns\TextColumn::make('question.question')
                     ->numeric()
-                    ->label('رقم السؤال')
+                    ->label(' السؤال')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('test_id')
+                Tables\Columns\TextColumn::make('test.test_type')
                     ->numeric()
-                    ->label('رقم الاختبار')
+                    ->label(' الاختبار')
                     ->sortable(),
+
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

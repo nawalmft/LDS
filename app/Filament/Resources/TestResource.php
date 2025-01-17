@@ -25,24 +25,57 @@ class TestResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('course_id')
+                Forms\Components\Select::make('course_id')
+                    ->label(' الدورة')
+                    ->options(function () {
+                        return \App\Models\Course::all()->pluck('title', 'id');
+                    })
+                    ->required(),
+
+                Forms\Components\Select::make('user_id')
+                    ->label(' المستخدم')
+                    ->options(function () {
+                        return \App\Models\User::Where('role', 'instructor')->pluck('name', 'id');
+                    })
+                    ->required(),
+
+                Forms\Components\TextInput::make('duration')
                     ->required()
-                    ->label('رقم الدورة')
+                    ->label('مدة الاختبار')
                     ->numeric(),
-                Forms\Components\TextInput::make('user_id')
-                    ->required()
-                    ->label('رقم المستخدم')
-                    ->numeric(),
+
                 Forms\Components\TextInput::make('total_grade')
                     ->required()
-                    ->label('المجموع')
+                    ->label('الدرجة الكلية')
                     ->numeric(),
                 Forms\Components\DatePicker::make('start_date')
                     ->label('تاريخ البدء')
                     ->required(),
-                Forms\Components\TextInput::make('test_type')
-                    ->label('نوع الاختبار')
+
+                Forms\Components\DateTimePicker::make('date_time')
+                    ->label('تاريخ ووقت الاختبار')
                     ->required(),
+
+                Forms\Components\Select::make('test_type')
+                    ->label('نوع الاختبار')
+                    ->options([
+                        'written ' => '  الكتابي ',
+                        ' on-road ' => 'on-road  ',
+
+                    ])
+                    ->required(),
+
+            Forms\Components\TextInput::make('total_questions')
+                ->required()
+                ->label('عدد الاسئلة')   
+                ->numeric(),
+
+                Forms\Components\TextInput::make('passing_score')
+                ->required()
+                ->label('درجة النجاح')   
+                ->numeric(),
+            
+
             ]);
     }
 
@@ -50,13 +83,13 @@ class TestResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('course_id')
+                Tables\Columns\TextColumn::make('course_id.title')
                     ->numeric()
-                    ->label('رقم الدورة')
+                    ->label(' الدورة')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('user_id')
+                Tables\Columns\TextColumn::make('user_id.name')
                     ->numeric()
-                    ->label('رقم المستخدم')
+                    ->label('المستخدم')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('total_grade')
                     ->numeric()

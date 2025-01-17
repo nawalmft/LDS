@@ -12,7 +12,7 @@ class TestAttempt extends Model
     protected $fillable = [
         'test_id',
         'user_id',
-        'question_answer_id',
+        'question_answer_id'
 
     ];
 
@@ -26,5 +26,9 @@ class TestAttempt extends Model
 
     public function test_question(){
         return $this->hasMany(TestQuestion::class);
+    }
+
+    public function question_answer(){
+        return $this->belongsTo(QuestionAnswer::class);
     }
 }

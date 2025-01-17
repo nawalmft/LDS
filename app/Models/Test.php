@@ -15,7 +15,11 @@ class Test extends Model
         'course_id',
         'user_id',
         'test_type',
-        'start_date'
+        'start_date',
+        'duration',
+        'passing_score',
+        'total_questions',
+        'datetime_start'
     ];
 
 

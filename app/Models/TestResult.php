@@ -14,6 +14,7 @@ class TestResult extends Model
         'user_id',
         'score',
         'time',
+        'status',
     ];
 
 

@@ -5,8 +5,28 @@ namespace App\Filament\Resources\TestQuestionResource\Pages;
 use App\Filament\Resources\TestQuestionResource;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Contracts\Support\Htmlable;
+use App\Models\User;
+use Filament\Notifications\Notification;
 
 class CreateTestQuestion extends CreateRecord
 {
     protected static string $resource = TestQuestionResource::class;
+
+    public function getTitle(): string
+    {
+        return 'اضافة سؤال';
+    }
+
+    protected function afterCreate(): void
+    {
+        $admins = User::where('role', 'admin')->get();
+        $this_user = auth()->user();
+        Notification::make()
+        ->title('تم اضافة سؤال جديد')
+        ->body('تم اضافة سؤال جديد بنجاح من قبل ' . $this_user->name)
+        ->icon('heroicon-o-academic-cap')
+        ->success()
+        ->sendToDatabase($admins);
+    }
 }

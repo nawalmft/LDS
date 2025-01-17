@@ -13,6 +13,8 @@ class CoursePerformanceCriteria extends Model
         'course_id',
         'criteria',
         'total_grade',
+        'criteria_description',
+        'minimum_score',
     ];
 
     public function course(){

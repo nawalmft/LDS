@@ -26,17 +26,27 @@ class CoursePerformanceCriteriaResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('course_id')
-                    ->required()
-                    ->label('رقم الدورة')
-                    ->numeric(),
+                Forms\Components\Select::make('course_id')
+                    ->label(' الدورة')
+                    ->options(function () {
+                        return \App\Models\Course::all()->pluck('title', 'id');
+                    })
+                    ->required(),
                 Forms\Components\TextInput::make('criteria')
                     ->required()
-                    ->label('المعيار')
+                    ->label('إسم المعيار')
+                    ->maxLength(255),
+                Forms\Components\Textarea::make('criteria_description')
+                    ->required()    
+                    ->label('وصف المعيار')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('total_grade')
                     ->required()
                     ->label('المجموع')
+                    ->numeric(),
+                Forms\Components\TextInput::make('minimum_score')
+                    ->required()
+                    ->label('الحد الادنى')
                     ->numeric(),
             ]);
     }
@@ -45,16 +55,24 @@ class CoursePerformanceCriteriaResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('course_id')
+                Tables\Columns\TextColumn::make('course.title')
                     ->numeric()
-                    ->label('رقم الدورة')
+                    ->label(' الدورة')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('criteria')
                     ->label('المعيار')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('criteria_description')
+                    ->label('وصف المعيار')
+                    ->searchable(),
+
                 Tables\Columns\TextColumn::make('total_grade')
                     ->numeric()
                     ->label('المجموع')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('minimum_score')
+                    ->numeric() 
+                    ->label('الحد الادنى')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

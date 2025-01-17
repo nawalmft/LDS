@@ -27,10 +27,20 @@ class LessonResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('enrollment_id')
+                Forms\Components\TextInput::make('title')
                     ->required()
-                    ->label('رقم التسجيل')
-                    ->numeric(),
+                    ->label('عنوان الدرس')
+                    ->maxLength(255),
+                Forms\Components\Textarea::make('description')
+                    ->required()
+                    ->label('الوصف')    
+                    ->columnSpanFull(),
+                Forms\Components\Select::make('enrollment_id')
+                    ->label(' التسجيل')
+                    ->options(function () {
+                        return \App\Models\Enrollment::all()->pluck('id', 'id');
+                    })
+                    ->required(),
                 Forms\Components\TextInput::make('status')
                     ->label('الحالة')
                     ->required(),
@@ -40,6 +50,12 @@ class LessonResource extends Resource
                 Forms\Components\Textarea::make('notes')
                     ->required()
                     ->label('الملاحظات')
+                    ->columnSpanFull(),
+
+
+                    Forms\Components\Textarea::make('video_url')
+                    ->required()
+                    ->label('رابط الفيديو')
                     ->columnSpanFull(),
             ]);
     }

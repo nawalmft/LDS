@@ -58,15 +58,25 @@ class UserResource extends Resource
                     ->default('user'),
                 Forms\Components\DateTimePicker::make('date_of_birth')
                     ->label('تاريخ الميلاد'),
-                Forms\Components\TextInput::make('gender')
-                    ->maxLength(255)
-                    ->label('الجنس'),
+                Forms\Components\Select::make('gender')
+                    ->label('الجنس')
+                    ->options([
+                        'male' => 'ذكر',
+                        'female' => 'انثى',
+                    ])
+                    ->required(),
                 Forms\Components\DateTimePicker::make('email_verified_at'),
                 Forms\Components\TextInput::make('password')
                     ->password()
                     ->required()
                     ->label('كلمة المرور')
                     ->maxLength(255),
+
+                Forms\Components\TextInput::make('remember_token')
+                    ->required()
+                    ->label('المرجع')
+                    ->maxLength(255),
+
             ]);
     }
 

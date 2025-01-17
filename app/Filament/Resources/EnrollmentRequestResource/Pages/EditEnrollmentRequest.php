@@ -13,7 +13,12 @@ class EditEnrollmentRequest extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()->label('حذف'),
         ];
+    }
+
+    public function getTitle(): string
+    {
+        return 'تعديل '. '' . $this->record->user->name . ' ' . $this->record->course->name;
     }
 }

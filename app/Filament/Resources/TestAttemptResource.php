@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Notifications\Notification;
 
 class TestAttemptResource extends Resource
 {
@@ -27,18 +28,27 @@ class TestAttemptResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('test_id')
-                ->required()
-                ->label('رقم الاختبار')
-                ->numeric(),
-                Forms\Components\TextInput::make(' question_answer_id')
-                ->required()
-                ->label('رقم إجابة السؤال')
-                ->numeric(),
-                Forms\Components\TextInput::make('user_id')
-                ->required()
-                ->label('رقم المستخدم')
-                ->numeric(),
+                Forms\Components\Select::make('test_id')
+                ->label(' الاختبار')
+                ->options(function () {
+                    return \App\Models\Test::all()->pluck('id', 'id');
+                    
+                })
+                ->required(),
+
+                Forms\Components\Select::make('question_answer_id')
+                ->label(' إجابة السؤال')
+                ->options(
+                    \App\Models\QuestionAnswer::all()->pluck('answer', 'id')
+                )
+                ->required(),
+                
+                Forms\Components\Select::make('user_id')
+                ->label(' المستخدم')
+                ->options(function () {
+                    return \App\Models\User::Where('role', 'student')->pluck('name', 'id');
+                })
+                ->required(),
             ]);
     }
 
@@ -46,17 +56,17 @@ class TestAttemptResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('test_id')
+                Tables\Columns\TextColumn::make('test.test_type')
                 ->numeric()
-                ->label('رقم الاختبار')
+                ->label(' الاختبار')
                 ->sortable(),
-                Tables\Columns\TextColumn::make('question_answer_id')
+                Tables\Columns\TextColumn::make('question_answer.question.question')
                 ->numeric()
-                ->label('رقم إجابة السؤال')
+                ->label(' السؤال')
                 ->sortable(),
-                Tables\Columns\TextColumn::make('user_id')
+                Tables\Columns\TextColumn::make('user.name')
                 ->numeric()
-                ->label('رقم المستخدم')
+                ->label(' المستخدم')
                 ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                 ->dateTime()

@@ -27,14 +27,18 @@ class EnrollmentResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('course_id')
-                    ->required()
-                    ->label('رقم الدورة')
-                    ->numeric(),
-                Forms\Components\TextInput::make('user_id')
-                    ->required()
-                    ->label('رقم المستخدم')
-                    ->numeric(),
+                Forms\Components\Select::make('course_id')
+                    ->label(' الدورة')
+                    ->options(function () {
+                        return \App\Models\Course::all()->pluck('title', 'id');
+                    })
+                    ->required(),
+                Forms\Components\Select::make('user_id')
+                    ->label(' المستخدم')
+                    ->options(function () {
+                        return \App\Models\User::Where('role', 'student')->pluck('name', 'id');
+                    })
+                    ->required(),
             ]);
     }
 
@@ -42,13 +46,12 @@ class EnrollmentResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('course_id')
-                    ->numeric()
-                    ->label('رقم الدورة')
+                Tables\Columns\TextColumn::make('course.title')  
+                    ->label(' الدورة')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('user_id')
-                    ->numeric()
-                    ->label('رقم المستخدم')
+                Tables\Columns\TextColumn::make('user.name')
+                    
+                    ->label(' المستخدم')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

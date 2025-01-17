@@ -26,26 +26,42 @@ class EnrollmentRequestResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('course_id')
+                Forms\Components\Select::make('course_id')
                     ->required()
-                    ->label('رقم الدورة')
-                    ->numeric(),
-                Forms\Components\TextInput::make('user_id')
+                    ->label(' الدورة')
+                    ->options(function () {
+                        return \App\Models\Course::all()->pluck('title', 'id');
+                    }),
+                    
+                Forms\Components\Select::make('user_id')
                     ->required()
-                    ->label('رقم المستخدم')
-                    ->numeric(),
+                    ->label(' المستخدم')
+                    ->options(function () {
+                        return \App\Models\User::Where('role', 'student')->pluck('name', 'id');
+                    }),
                 Forms\Components\DatePicker::make('preferred_starting_date')
                     ->required()
                     ->label('تاريخ البدء المفضل'),
-                Forms\Components\TextInput::make('preferred_payment_method')
+                Forms\Components\Select::make('preferred_payment_method')
                     ->required()
-                    ->label('طريقة الدفع المفضلة'),
-                Forms\Components\TextInput::make('preferred_time')
+                    ->label('طريقة الدفع المفضلة')
+                    ->options([
+                        'per-lesson' => 'لكل درس',
+                        'pre-pay' => 'مدفوعة مسبقا',
+                    ]),
+                Forms\Components\TimePicker::make('preferred_time')
                     ->required()
-                    ->label('وقت المفضل'),
-                Forms\Components\TextInput::make('status')
-                    ->required()
-                    ->label('الحالة'),
+                    ->label('وقت البدء المفضل'),
+                    
+                Forms\Components\Select::make('status')
+                    ->label('الحالة')
+                    ->options([
+                        'pending' => 'قيد الانتظار',
+                        'accepted' => 'مقبول',
+                        'rejected' => 'مرفوض',
+                    ])
+                    ->default('active')
+                    ->required(),
             ]);
     }
 

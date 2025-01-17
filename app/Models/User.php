@@ -59,9 +59,7 @@ class User extends Authenticatable
         return $this->hasMany(LessonPerformanceEvaluation::class);
     }
 
-    // public function course(){
-    //     return $this->hasOne(Course::class);
-    // }
+   
 
     /**
      * The attributes that should be hidden for serialization.

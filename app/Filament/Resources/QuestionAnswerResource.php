@@ -27,10 +27,12 @@ class QuestionAnswerResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('question_id')
-                    ->required()
-                    ->label('رقم السؤال')
-                    ->numeric(),
+                Forms\Components\Select::make('question_id')
+                    ->label(' السؤال')
+                    ->options(function () {
+                        return \App\Models\Question::all()->pluck('question', 'id');
+                    })
+                    ->required(),
                 Forms\Components\Textarea::make('answer')
                     ->required()
                     ->label('الجواب')
@@ -45,9 +47,9 @@ class QuestionAnswerResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('question_id')
+                Tables\Columns\TextColumn::make('question_id.question')
                     ->numeric()
-                    ->label('رقم السؤال')
+                    ->label(' السؤال')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('answer')
                     ->label('الجواب')
