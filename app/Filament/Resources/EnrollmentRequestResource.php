@@ -69,11 +69,11 @@ class EnrollmentRequestResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('course_id')
+                Tables\Columns\TextColumn::make('course.title')
                     ->numeric()
-                    ->label('رقم الدورة')
+                    ->label(' الدورة')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('user_id')
+                Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
                     ->label('رقم المستخدم')
                     ->sortable(),

@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -65,17 +66,17 @@ class UserResource extends Resource
                         'female' => 'انثى',
                     ])
                     ->required(),
-                Forms\Components\DateTimePicker::make('email_verified_at'),
                 Forms\Components\TextInput::make('password')
                     ->password()
-                    ->required()
+                    ->required(fn(string $context) => $context === 'create')
+                    ->maxLength(255)
+                    ->dehydrateStateUsing(fn($state) => !empty ($state) ? Hash::make($state) : null)
+                    ->dehydrated(fn($state) => !empty ($state))
+
                     ->label('كلمة المرور')
                     ->maxLength(255),
 
-                Forms\Components\TextInput::make('remember_token')
-                    ->required()
-                    ->label('المرجع')
-                    ->maxLength(255),
+
 
             ]);
     }

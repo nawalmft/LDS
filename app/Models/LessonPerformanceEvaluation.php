@@ -19,4 +19,7 @@ class LessonPerformanceEvaluation extends Model
 public function lesson(){
     return $this->belongsTo(Lesson::class);
 }    
+public function course_criteria(){
+    return $this->belongsTo(CoursePerformanceCriteria::class,'course_criteria_id');
+}
 }

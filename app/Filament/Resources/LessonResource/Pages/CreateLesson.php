@@ -8,6 +8,7 @@ use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Contracts\Support\Htmlable;
 use App\Models\User;
 use Filament\Notifications\Notification;
+use Illuminate\Support\Facades\Storage;
 
 class CreateLesson extends CreateRecord
 {
@@ -18,6 +19,12 @@ class CreateLesson extends CreateRecord
         return 'اضافة درس';
     }
 
+    protected function mutateFormDataBeforeCreate(array $data): array 
+    {
+        $data['video_type'] = Storage::disk('public')->mimeType($data['video']);
+ 
+        return $data;
+    } 
     protected function afterCreate(): void
     {
         $admins = User::where('role', 'admin')->get();

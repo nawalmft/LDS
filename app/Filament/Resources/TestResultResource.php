@@ -64,11 +64,11 @@ class TestResultResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('test_id.test_type')
+                Tables\Columns\TextColumn::make('test.test_type')
                 ->numeric()
                 ->label(' الاختبار')
                 ->sortable(),
-                Tables\Columns\TextColumn::make('user_id.name')
+                Tables\Columns\TextColumn::make('user.name')
                 ->numeric()
                 ->label(' المستخدم')
                 ->sortable(),

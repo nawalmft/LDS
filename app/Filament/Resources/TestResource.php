@@ -83,11 +83,11 @@ class TestResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('course_id.title')
+                Tables\Columns\TextColumn::make('course.title')
                     ->numeric()
                     ->label(' الدورة')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('user_id.name')
+                Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
                     ->label('المستخدم')
                     ->sortable(),

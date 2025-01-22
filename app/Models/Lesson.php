@@ -14,6 +14,7 @@ class Lesson extends Model
         'title',
         'description',
         'video',
+        'video_type',
         'enrollment_id',
         'status',
         'start_date',      

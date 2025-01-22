@@ -25,8 +25,10 @@ class InstractorPanelProvider extends PanelProvider
         return $panel
             ->id('instractor')
             ->path('instractor')
+            ->login()
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => '#0a4723',
+                'secondary' => '#0a4723',
             ])
             ->discoverResources(in: app_path('Filament/Instractor/Resources'), for: 'App\\Filament\\Instractor\\Resources')
             ->discoverPages(in: app_path('Filament/Instractor/Pages'), for: 'App\\Filament\\Instractor\\Pages')
@@ -51,6 +53,9 @@ class InstractorPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+
+            ->databaseNotifications()
+            ->databaseNotificationsPolling('3s');
     }
 }

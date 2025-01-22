@@ -49,11 +49,11 @@ class LessonPerformanceEvaluationResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('course_criteria_id.criteria')
+                Tables\Columns\TextColumn::make('course_criteria.criteria')
                     ->numeric()
                     ->label(' معيار الدورة')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('lesson_id.title')
+                Tables\Columns\TextColumn::make('lesson.title')
                     ->numeric()
                     ->label(' الدرس')
                     ->sortable(),

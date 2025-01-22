@@ -53,10 +53,22 @@ class LessonResource extends Resource
                     ->columnSpanFull(),
 
 
-                    Forms\Components\Textarea::make('video_url')
+                    Forms\Components\FileUpload::make('video')
                     ->required()
-                    ->label('رابط الفيديو')
-                    ->columnSpanFull(),
+                    ->preserveFilenames()
+                    ->maxSize(20000),
+
+                    Forms\Components\Select::make('video_type')
+                    ->required()
+                    ->options([
+                        'mp4' => 'mp4',
+                        'mp3' => 'mp3',
+                        'mkv' => 'mkv',
+                        'mov' => 'mov',
+                        'wmv' => 'wmv',
+                        'vlc' => 'vlc',
+                    ])
+                    ->label('نوع الفيديو'),
             ]);
     }
 
@@ -87,6 +99,8 @@ class LessonResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

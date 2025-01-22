@@ -20,4 +20,7 @@ class CoursePerformanceCriteria extends Model
     public function course(){
         return $this->belongsTo(Course::class);
     }
+    public function lessonperformanceevaluations(){
+        return $this->hasMany(LessonPerformanceEvaluation::class);
+    }
 }

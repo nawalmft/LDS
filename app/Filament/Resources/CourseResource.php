@@ -6,6 +6,7 @@ use App\Filament\Resources\CourseResource\Pages;
 use App\Filament\Resources\CourseResource\RelationManagers;
 use App\Models\Course;
 use Filament\Forms;
+use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -35,15 +36,15 @@ class CourseResource extends Resource
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('fee')
                     ->required()
-                    ->label('رسوم الدورة')
+                    ->label('رسوم الإشتراك في الدورة')
                     ->numeric(),
                 Forms\Components\TextInput::make('course_duration')
                     ->required()
-                    ->label('مدة الدورة')
+                    ->label('  عدد الأيام الموصى بها في الدورة')
                     ->numeric(),
                 Forms\Components\TextInput::make('hours_per_day')
                     ->required()
-                    ->label('عدد ساعات في اليوم')
+                    ->label('عدد الساعات الموصى بها في اليوم ')
                     ->numeric(),
                 Forms\Components\Select::make('transmission_type')
                     ->required()
@@ -69,11 +70,11 @@ class CourseResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('course_duration')
                     ->numeric()
-                    ->label('مدة الدورة')
+                    ->label('عدد الأيام الموصى بها في الدورة')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('hours_per_day')
                     ->numeric()
-                    ->label('عدد ساعات في اليوم')
+                    ->label('عدد الساعات الموصى بها في اليوم')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('transmission_type')
                     ->label('نوع النقل')
@@ -84,6 +85,8 @@ class CourseResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

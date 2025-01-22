@@ -47,7 +47,7 @@ class QuestionAnswerResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('question_id.question')
+                Tables\Columns\TextColumn::make('question.question')
                     ->numeric()
                     ->label(' السؤال')
                     ->sortable(),
