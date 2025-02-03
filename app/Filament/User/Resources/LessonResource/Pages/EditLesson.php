@@ -16,4 +16,10 @@ class EditLesson extends EditRecord
          
         ];
     }
+
+    public function getTitle(): string
+    {
+        return 'عرض الدرس ';
+    }
 }
+

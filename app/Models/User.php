@@ -25,6 +25,8 @@ class User extends Authenticatable
         'role',
         'date_of_birth',
         'image',
+        'years_of_driving_experience',
+        'driving_license_image',
     ];
 
     public function course(){

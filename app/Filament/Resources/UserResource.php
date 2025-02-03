@@ -48,6 +48,16 @@ class UserResource extends Resource
                 Forms\Components\FileUpload::make('image')
                     ->image()
                     ->label('الصورة'),
+                    
+                 Forms\Components\FileUpload::make('driver_license_image')
+                    ->image()
+                    ->label('صورة رخصة القيادة'),
+                
+                Forms\Components\TextInput::make('years_of_driving_experience')
+                    ->required()
+                    ->label(' عدد سنوات الخبرة في القيادة')
+                    ->numeric(),
+
                 Forms\Components\Select::make('role')
                     ->required()
                     ->label('الصلاحية')
@@ -75,7 +85,7 @@ class UserResource extends Resource
 
                     ->label('كلمة المرور')
                     ->maxLength(255),
-
+                
 
 
             ]);

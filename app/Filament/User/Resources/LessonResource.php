@@ -144,9 +144,11 @@ class LessonResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
                    
                 ]),
             ]);
@@ -168,6 +170,8 @@ class LessonResource extends Resource
     {
         return [
             'index' => Pages\ListLessons::route('/'),
+            'create' => Pages\CreateLesson::route('/create'),
+            'edit' => Pages\EditLesson::route('/{record}/edit'),
         ];
     }
 }

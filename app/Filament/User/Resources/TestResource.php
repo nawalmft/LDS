@@ -33,10 +33,13 @@ class TestResource extends Resource
                     ->required()
                     ->label('الكورس')
                     ->numeric(),
-                Forms\Components\TextInput::make('user_id')
+                Forms\Components\Select::make('user_id')
                     ->required()
-                    ->label('الطالب')
-                    ->numeric(),
+                   ->options(function () {
+                        return \App\Models\User::all()->pluck('name', 'id');
+                    })
+                    ->label('المدرب')
+                    ->disabled(),
                 Forms\Components\TextInput::make('duration')
                     ->required()
                     ->label('المدة')
@@ -49,6 +52,9 @@ class TestResource extends Resource
                     ->required()
                     ->label('درجة النجاح')
                     ->numeric()
+                    ->readOnly()
+                    ->dehydrated(false)
+
                     ->default(75),
                 Forms\Components\DatePicker::make('start_date')
                     ->required()
@@ -56,6 +62,11 @@ class TestResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('test_type')
                     ->label('نوع الأختبار')
+                    ->required()
+                    ->dehydrated(false),
+
+                Forms\Components\TextInput::make('test_name')
+                    ->label('اسم الأختبار')
                     ->required(),
                 Forms\Components\TextInput::make('total_questions')
                     ->required()
@@ -102,6 +113,9 @@ class TestResource extends Resource
                 Tables\Columns\TextColumn::make('total_questions')
                     ->numeric()
                     ->label('عدد الاسئلة')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('test_name')
+                    ->label('اسم الأختبار')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

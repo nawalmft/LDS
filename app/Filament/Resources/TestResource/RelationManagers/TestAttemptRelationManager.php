@@ -18,9 +18,11 @@ class TestAttemptRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('question_answer_id')
+                Forms\Components\Select::make('question_answer_id')
                     ->required()
-                    ->maxLength(255),
+                    ->options(
+                        fn () => \App\Models\QuestionAnswer::where('question_id', $this->ownerRecord->question_id)->pluck('answer', 'id')
+                    )
             ]);
     }
 
