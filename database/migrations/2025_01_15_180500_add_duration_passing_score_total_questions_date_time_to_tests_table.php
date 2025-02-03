@@ -26,7 +26,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('tests', function (Blueprint $table) {
-            $table->date('start_date');
+            // $table->date('start_date');
             $table->dropColumn('duration');
             $table->dropColumn('passing_score');
             $table->dropColumn('total_questions');

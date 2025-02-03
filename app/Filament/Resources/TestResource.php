@@ -4,6 +4,9 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\TestResource\Pages;
 use App\Filament\Resources\TestResource\RelationManagers;
+use App\Filament\Resources\TestResource\RelationManagers\TestAttemptRelationManager;
+use App\Filament\Resources\TestResource\RelationManagers\TestQuestionsRelationManager;
+use App\Filament\Resources\TestResource\RelationManagers\TestResultRelationManager;
 use App\Models\Test;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -48,10 +51,7 @@ class TestResource extends Resource
                     ->required()
                     ->label('الدرجة الكلية')
                     ->numeric(),
-                Forms\Components\DatePicker::make('start_date')
-                    ->label('تاريخ البدء')
-                    ->required(),
-
+                
                 Forms\Components\DateTimePicker::make('date_time')
                     ->label('تاريخ ووقت الاختبار')
                     ->required(),
@@ -59,7 +59,7 @@ class TestResource extends Resource
                 Forms\Components\Select::make('test_type')
                     ->label('نوع الاختبار')
                     ->options([
-                        'written ' => '  الكتابي ',
+                        'written ' => '  written ',
                         ' on-road ' => 'on-road  ',
 
                     ])
@@ -95,10 +95,7 @@ class TestResource extends Resource
                     ->numeric()
                     ->label('المجموع')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('start_date')
-                    ->date()
-                    ->label('تاريخ البدء')
-                    ->sortable(),
+                
                 Tables\Columns\TextColumn::make('test_type')
                     ->label('نوع الاختبار'),
                 Tables\Columns\TextColumn::make('created_at')
@@ -115,6 +112,8 @@ class TestResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -126,7 +125,9 @@ class TestResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            TestQuestionsRelationManager::class,
+            TestAttemptRelationManager::class,
+            TestResultRelationManager::class
         ];
     }
 

@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CourseResource\Pages;
 use App\Filament\Resources\CourseResource\RelationManagers;
+use App\Filament\Resources\CourseResource\RelationManagers\CourseperformancecriteriasRelationManager;
+use App\Filament\Resources\CourseResource\RelationManagers\LessonsRelationManager;
 use App\Models\Course;
 use Filament\Forms;
 use Filament\Forms\Components\Tabs\Tab;
@@ -68,14 +70,14 @@ class CourseResource extends Resource
                     ->numeric()
                     ->label('رسوم الدورة')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('course_duration')
-                    ->numeric()
-                    ->label('عدد الأيام الموصى بها في الدورة')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('hours_per_day')
-                    ->numeric()
-                    ->label('عدد الساعات الموصى بها في اليوم')
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('course_duration')
+                //     ->numeric()
+                //     ->label('عدد الأيام الموصى بها في الدورة')
+                //     ->sortable(),
+                // Tables\Columns\TextColumn::make('hours_per_day')
+                //     ->numeric()
+                //     ->label('عدد الساعات الموصى بها في اليوم')
+                //     ->sortable(),
                 Tables\Columns\TextColumn::make('transmission_type')
                     ->label('نوع النقل')
                     ->sortable(),
@@ -98,7 +100,7 @@ class CourseResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+         CourseperformancecriteriasRelationManager::class   
         ];
     }
 

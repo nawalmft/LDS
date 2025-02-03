@@ -6,6 +6,7 @@ use App\Filament\Resources\TestResultResource\Pages;
 use App\Filament\Resources\TestResultResource\RelationManagers;
 use App\Models\TestResult;
 use Filament\Forms;
+use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -94,6 +95,10 @@ class TestResultResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make(),
+
+                
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

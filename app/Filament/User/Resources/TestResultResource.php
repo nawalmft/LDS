@@ -64,9 +64,9 @@ class TestResultResource extends Resource
                     ->numeric()
                     ->label('الدرجة')
                     ->sortable(),
-                Tables\Columns\IconColumn::make('status')
+                Tables\Columns\TextColumn::make('status')
                     ->label('الحالة')
-                    ->boolean(),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('time')
                     ->label('الوقت')
                     ->sortable(),

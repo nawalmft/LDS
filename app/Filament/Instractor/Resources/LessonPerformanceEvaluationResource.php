@@ -35,10 +35,12 @@ class LessonPerformanceEvaluationResource extends Resource
                         return CoursePerformanceCriteria::all()->pluck('criteria', 'id');
                     })
                     ->required(),
-                Forms\Components\TextInput::make('lesson_id')
-                    ->required()
+                Forms\Components\Select::make('lesson_id')
+                    ->options(function () {
+                        return \App\Models\Lesson::all()->pluck('title', 'id');
+                    })
                     ->label('الدرس')
-                    ->numeric(),
+                    ->required(),
                 Forms\Components\TextInput::make('grade')
                     ->required()
                     ->label('الدرجة')

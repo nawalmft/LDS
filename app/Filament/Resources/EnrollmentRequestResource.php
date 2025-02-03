@@ -39,9 +39,11 @@ class EnrollmentRequestResource extends Resource
                     ->options(function () {
                         return \App\Models\User::Where('role', 'student')->pluck('name', 'id');
                     }),
+
                 Forms\Components\DatePicker::make('preferred_starting_date')
                     ->required()
                     ->label('تاريخ البدء المفضل'),
+
                 Forms\Components\Select::make('preferred_payment_method')
                     ->required()
                     ->label('طريقة الدفع المفضلة')
@@ -49,10 +51,24 @@ class EnrollmentRequestResource extends Resource
                         'per-lesson' => 'لكل درس',
                         'pre-pay' => 'مدفوعة مسبقا',
                     ]),
+
+
+                    Forms\Components\TextInput::make('preferred_daily_hours')
+                    ->required()
+                    ->numeric()
+                    ->minValue(1)
+                    ->label(' عدد الساعات اليومية المفضلة'),
+
                 Forms\Components\TimePicker::make('preferred_time')
                     ->required()
                     ->label('وقت البدء المفضل'),
                     
+                    Forms\Components\TextInput::make('preferred_total_hours')
+                    ->required()
+                    ->numeric()
+                    ->minValue(4)
+                    ->label(' عدد الساعات الكلية المفضلة'),
+
                 Forms\Components\Select::make('status')
                     ->label('الحالة')
                     ->options([
@@ -61,6 +77,12 @@ class EnrollmentRequestResource extends Resource
                         'rejected' => 'مرفوض',
                     ])
                     ->default('active')
+                    ->required(),
+
+                    Forms\Components\TextInput::make('total_price')
+                    ->label('السعر الكلي')
+                    ->numeric()
+                     ->disabled()
                     ->required(),
             ]);
     }
@@ -75,7 +97,7 @@ class EnrollmentRequestResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
-                    ->label('رقم المستخدم')
+                    ->label(' المستخدم')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('preferred_starting_date')
                     ->date()
@@ -104,6 +126,8 @@ class EnrollmentRequestResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

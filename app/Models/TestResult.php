@@ -15,6 +15,7 @@ class TestResult extends Model
         'score',
         'time',
         'status',
+        'trainee_id',
     ];
 
 
@@ -25,5 +26,9 @@ class TestResult extends Model
 
     public function user(){
         return $this->belongsTo(User::class);
+    }
+
+    public function trainee(){
+        return $this->belongsTo(Trainee::class);
     }
 }

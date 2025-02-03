@@ -46,8 +46,12 @@ class TestResultResource extends Resource
                     ->required()
                     ->label('الدرجة')
                     ->numeric(),
-                Forms\Components\Toggle::make('status')
+                Forms\Components\Select::make('status')
                     ->label('الحالة')
+                    ->options([
+                        'ناجح' => 'ناجح',
+                        ' راسب' => 'راسب',
+                    ])
                     ->required(),
                 Forms\Components\TextInput::make('time')
                     ->label('الوقت')
@@ -71,9 +75,9 @@ class TestResultResource extends Resource
                     ->numeric()
                     ->label('الدرجة')
                     ->sortable(),
-                Tables\Columns\IconColumn::make('status')
+                Tables\Columns\TextColumn::make('status')
                     ->label('الحالة')
-                    ->boolean(),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('time')
                     ->label('الوقت'),
                 Tables\Columns\TextColumn::make('created_at')

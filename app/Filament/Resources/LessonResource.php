@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\LessonResource\Pages;
 use App\Filament\Resources\LessonResource\RelationManagers;
+use App\Filament\Resources\LessonResource\RelationManagers\LessonperformanceevaluationsRelationManager;
 use App\Models\Lesson;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -41,25 +42,34 @@ class LessonResource extends Resource
                         return \App\Models\Enrollment::all()->pluck('id', 'id');
                     })
                     ->required(),
-                Forms\Components\TextInput::make('status')
+
+                Forms\Components\Select::make('status')
                     ->label('الحالة')
+                    ->options([
+                        'Scheduled' => 'مجدول',
+                        'Completed' => 'مكتمل',
+                        'Cancelled' => 'ملغي',
+                        'In Progress' => 'قيد التنفيذ',
+                    ])
                     ->required(),
+
                 Forms\Components\DatePicker::make('start_date')
                     ->label('تاريخ البدء')
                     ->required(),
+
+                    Forms\Components\TimePicker::make('lessom_time')
+                    ->label('وقت الدرس')
+                    ->required(),
+                    
                 Forms\Components\Textarea::make('notes')
-                    ->required()
                     ->label('الملاحظات')
                     ->columnSpanFull(),
 
-
                     Forms\Components\FileUpload::make('video')
-                    ->required()
                     ->preserveFilenames()
                     ->maxSize(20000),
 
                     Forms\Components\Select::make('video_type')
-                    ->required()
                     ->options([
                         'mp4' => 'mp4',
                         'mp3' => 'mp3',
@@ -69,6 +79,18 @@ class LessonResource extends Resource
                         'vlc' => 'vlc',
                     ])
                     ->label('نوع الفيديو'),
+
+                    Forms\Components\FileUpload::make('img')
+                 
+                    ->directory('images')
+                    ->image()
+                    ->label('صورة الدرس'),
+
+                    Forms\Components\FileUpload::make('document')
+                    
+                    ->directory('documents')
+                    ->label('رفع مستندات الدرس'),
+
             ]);
     }
 
@@ -80,10 +102,22 @@ class LessonResource extends Resource
                     ->numeric()
                     ->label('رقم التسجيل')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('status'),
+
+                Tables\Columns\TextColumn::make('title')
+                    ->label('عنوان الدرس')
+                    ->searchable(),
+
+                Tables\Columns\ImageColumn::make('img')
+                    ->label('صورة الدرس')
+                    ->circular(),
+
+                Tables\Columns\TextColumn::make('status')
+                    ->label('الحالة')
+                    ->searchable(),
+
                 Tables\Columns\TextColumn::make('start_date')
                     ->date()
-                    ->label('الحالة')
+                    ->label('تاريخ البدء')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -112,7 +146,7 @@ class LessonResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+          LessonperformanceevaluationsRelationManager::class  
         ];
     }
 

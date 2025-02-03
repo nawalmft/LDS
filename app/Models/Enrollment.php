@@ -12,6 +12,8 @@ class Enrollment extends Model
     protected $fillable = [
         'user_id',
         'course_id',
+        'trainee_id'
+        
     ];
 
     public function course(){
@@ -24,5 +26,9 @@ class Enrollment extends Model
 
     public function lessons(){
         return $this->hasMany(Lesson::class);
+    }
+
+    public function trainee(){
+        return $this->belongsTo(Trainee::class);
     }
 }

@@ -62,9 +62,9 @@ class CoursePerformanceCriteriaResource extends Resource
                 Tables\Columns\TextColumn::make('criteria')
                     ->label('المعيار')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('criteria_description')
-                    ->label('وصف المعيار')
-                    ->searchable(),
+                // Tables\Columns\TextColumn::make('criteria_description')
+                //     ->label('وصف المعيار')
+                //     ->searchable(),
 
                 Tables\Columns\TextColumn::make('total_grade')
                     ->numeric()
@@ -88,6 +88,8 @@ class CoursePerformanceCriteriaResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

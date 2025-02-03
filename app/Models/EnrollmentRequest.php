@@ -15,7 +15,11 @@ class EnrollmentRequest extends Model
         'status',
         'preferred_starting_date',
         'preferred_payment_method',
-        'preferred_time'
+        'preferred_time',
+        'preferred_total_hours',
+        'preferred_daily_hours',
+        'total_price',
+        'trainee_id'
     ];
 
     public function course(){

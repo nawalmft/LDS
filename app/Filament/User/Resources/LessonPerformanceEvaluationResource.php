@@ -72,6 +72,8 @@ class LessonPerformanceEvaluationResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
+                // Tables\Actions\EditAction::make(),
+                // Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -81,11 +83,11 @@ class LessonPerformanceEvaluationResource extends Resource
     }
 
 
-    public static function getEloquentQuery(): Builder
-    {
-        // the lesson_id should be the user id
-        return parent::getEloquentQuery()->where('lesson_id',auth()->user()->id);
-    }
+    // public static function getEloquentQuery(): Builder
+    // {
+    //     // the lesson_id should be the user id
+    //     return parent::getEloquentQuery()->where('lesson_id',auth()->user()->id);
+    // }
     public static function getRelations(): array
     {
         return [

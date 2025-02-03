@@ -63,14 +63,14 @@ class CourseResource extends Resource
                     ->numeric()
                     ->label('رسوم الإشتراك في الدورة')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('course_duration')
-                    ->numeric()
-                    ->label('عدد الأيام الموصى بها في الدورة')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('hours_per_day')
-                    ->numeric()
-                    ->label('عدد الساعات الموصى بها في اليوم ')
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('course_duration')
+                //     ->numeric()
+                //     ->label('عدد الأيام الموصى بها في الدورة')
+                //     ->sortable(),
+                // Tables\Columns\TextColumn::make('hours_per_day')
+                //     ->numeric()
+                //     ->label('عدد الساعات الموصى بها في اليوم ')
+                //     ->sortable(),
                 Tables\Columns\TextColumn::make('transmission_type')
                     ->label('نوع النقل')
                     ->sortable(),

@@ -4,6 +4,7 @@ namespace App\Filament\Instractor\Resources;
 
 use App\Filament\Instractor\Resources\TestResource\Pages;
 use App\Filament\Instractor\Resources\TestResource\RelationManagers;
+use App\Filament\Instractor\Resources\TestResource\RelationManagers\TestResultRelationManager;
 use App\Models\Test;
 use Filament\Forms;
 use Filament\Forms\Components\Tabs\Tab;
@@ -42,7 +43,7 @@ class TestResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('duration')
                     ->required()
-                    ->label('المدة')
+                    ->label('مدة الاختبار')
                     ->numeric(),
                 Forms\Components\TextInput::make('total_grade')
                     ->required()
@@ -53,11 +54,12 @@ class TestResource extends Resource
                     ->label('درجة النجاح')
                     ->numeric()
                     ->default(75),
-                Forms\Components\DatePicker::make('start_date')
-                    ->label('تاريخ البدء')
-                    ->required(),
-                Forms\Components\TextInput::make('test_type')
+                Forms\Components\Select::make('test_type')
                     ->label('نوع الاختبار')
+                    ->options([
+                        'written ' => '  written ',
+                        ' on-road ' => 'on-road  ',
+                    ])
                     ->required(),
                 Forms\Components\TextInput::make('total_questions')
                     ->required()
@@ -84,7 +86,7 @@ class TestResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('duration')
                     ->numeric()
-                    ->label('المدة')
+                    ->label('مدة الاختبار')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('total_grade')
                     ->numeric()
@@ -94,16 +96,12 @@ class TestResource extends Resource
                     ->numeric()
                     ->label('درجة النجاح')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('start_date')
-                    ->date()
-                    ->label('تاريخ البدء')
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('test_type')
                     ->label('نوع الأختبار'),
-                Tables\Columns\TextColumn::make('total_questions')
-                    ->numeric()
-                    ->label('عدد الاسئلة')
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('total_questions')
+                //     ->numeric()
+                //     ->label('عدد الاسئلة')
+                //     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -136,7 +134,7 @@ class TestResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            TestResultRelationManager::class
         ];
     }
 

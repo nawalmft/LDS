@@ -13,6 +13,7 @@ class LessonPerformanceEvaluation extends Model
         'lesson_id',
         'grade',
         'course_criteria_id',
+        'trainee_id',
     ];
 
 
@@ -21,5 +22,8 @@ public function lesson(){
 }    
 public function course_criteria(){
     return $this->belongsTo(CoursePerformanceCriteria::class,'course_criteria_id');
+}
+public function trainee(){
+    return $this->belongsTo(Trainee::class,'trainee_id');
 }
 }

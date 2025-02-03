@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\EnrollmentResource\Pages;
 use App\Filament\Resources\EnrollmentResource\RelationManagers;
+use App\Filament\Resources\EnrollmentResource\RelationManagers\LessonsRelationManager;
 use App\Models\Enrollment;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -67,6 +68,8 @@ class EnrollmentResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -78,7 +81,7 @@ class EnrollmentResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            LessonsRelationManager::class
         ];
     }
 

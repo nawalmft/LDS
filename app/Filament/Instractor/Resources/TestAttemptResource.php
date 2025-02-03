@@ -27,18 +27,22 @@ class TestAttemptResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('test_id')
-                    ->required()
-                    ->label('الاختبار')
-                    ->numeric(),
+                Forms\Components\Select::make('test_id')
+                    ->options(function () {
+                        return \App\Models\Test::all()->pluck('test_type', 'id');
+                    })
+                    ->label('الإختبار')
+                    ->required(),
                 Forms\Components\TextInput::make('question_answer_id')
                     ->required()
-
+                    ->label('رقم السؤال و الإجابة')
                     ->numeric(),
-                Forms\Components\TextInput::make('user_id')
-                    ->required()
+                Forms\Components\Select::make('user_id')
+                    ->options(function () {
+                        return \App\Models\User::Where('role', 'student')->pluck('name', 'id');
+                    })
                     ->label('المستخدم')
-                    ->numeric(),
+                    ->required(),
             ]);
     }
 
@@ -46,7 +50,7 @@ class TestAttemptResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('test_id')
+                Tables\Columns\TextColumn::make('test.test_type')
                     ->numeric()
                     ->label('الإختبار')
                     ->sortable(),
@@ -54,7 +58,7 @@ class TestAttemptResource extends Resource
                     ->numeric()
                     ->label('رقم السؤال و الإجابة')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('user_id')
+                Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
                     ->label('المستخدم')
                     ->sortable(),
@@ -71,11 +75,11 @@ class TestAttemptResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                   
                 ]),
             ]);
     }

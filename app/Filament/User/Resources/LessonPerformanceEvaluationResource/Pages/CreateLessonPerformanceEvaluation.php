@@ -9,4 +9,8 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateLessonPerformanceEvaluation extends CreateRecord
 {
     protected static string $resource = LessonPerformanceEvaluationResource::class;
+    public function getTitle(): string
+    {
+        return ' إضافة  تقييم الدرس';
+    }
 }

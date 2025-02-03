@@ -9,4 +9,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateTestAttempt extends CreateRecord
 {
     protected static string $resource = TestAttemptResource::class;
+     
+    public function getTitle(): string
+    {
+        return 'اضافة محاولة اختبار';
+    }
 }

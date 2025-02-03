@@ -28,25 +28,55 @@ class EnrollmentRequestResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('course_id')
-                    ->required()
+                Forms\Components\Select::make('course_id')
+                    ->options(function () {
+                        return \App\Models\Course::all()->pluck('title', 'id');
+                    })
                     ->label('الدورة')
-                    ->numeric(),
-                Forms\Components\TextInput::make('user_id')
-                    ->required()
+                    ->required(),
+
+                Forms\Components\Select::make('user_id')
                     ->label('المستخدم')
-                    ->numeric(),
+                    ->options(function () {
+                        return \App\Models\User::all()->pluck('name', 'id');
+                    })
+                    ->required(),
+
                 Forms\Components\DatePicker::make('preferred_starting_date')
                     ->label('تاريخ البدء المفضل')
                     ->required(),
-                Forms\Components\TextInput::make('preferred_payment_method')
+                Forms\Components\Select::make('preferred_payment_method')
+                    ->options([
+                        'per-lesson' => 'لكل درس',
+                        'pre-pay' => 'مدفوعة مسبقا',
+                    ])
                     ->label('طريقة الدفع المفضلة')
                     ->required(),
-                Forms\Components\TextInput::make('preferred_time')
+
+                    Forms\Components\TextInput::make('preferred_daily_hours')
+                    ->label('ساعات اليومية المفضلة')
+                    ->required(),
+
+                Forms\Components\TimePicker::make('preferred_time')
                     ->label('وقت البدء المفضل')
                     ->required(),
-                Forms\Components\TextInput::make('status')
+
+                    Forms\Components\TextInput::make('preferred_total_hours')
+                    ->label('عدد الساعات الكلية المفضلة')
+                    ->required(),
+
+                Forms\Components\Select::make('status')
+                    ->options([
+                        'pending' => 'قيد الانتظار',
+                        'accepted' => 'مقبول',
+                        'rejected' => 'مرفوض',
+                    ])
                     ->label('الحالة')
+                    ->required(),
+
+                    Forms\Components\TextInput::make('total_price')
+                    ->label('السعر الكلي')
+                    ->disabled()
                     ->required(),
             ]);
     }
@@ -96,10 +126,10 @@ class EnrollmentRequestResource extends Resource
     }
 
     # 
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()->where('user_id',auth()->id());
-    }
+    // public static function getEloquentQuery(): Builder
+    // {
+    //     return parent::getEloquentQuery()->where('user_id',auth()->id());
+    // }
     public static function getRelations(): array
     {
         return [

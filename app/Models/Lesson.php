@@ -15,10 +15,14 @@ class Lesson extends Model
         'description',
         'video',
         'video_type',
+        'img',
+        'document',
         'enrollment_id',
         'status',
-        'start_date',      
+        'start_date',
+        'lesson_time',      
         'notes',
+        'trainer_id'
     ];
 
 
@@ -32,6 +36,10 @@ class Lesson extends Model
 
     public function lessonperformanceevaluations(){
      return $this->hasMany(LessonPerformanceEvaluation::class);
+    }
+
+    public function trainer(){
+        return $this->belongsTo(Trainee::class);
     }
 
 }

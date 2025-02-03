@@ -27,14 +27,18 @@ class TestQuestionResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('question_id')
-                    ->required()
+                Forms\Components\Select::make('question_id')
+                    ->options(function () {
+                        return \App\Models\Question::all()->pluck('question', 'id');
+                    })
                     ->label('السؤال')
-                    ->numeric(),
-                Forms\Components\TextInput::make('test_id')
-                    ->required()
+                    ->required(),
+                Forms\Components\Select::make('test_id')
+                    ->options(function () {
+                        return \App\Models\Test::all()->pluck('test_type', 'id');
+                    })
                     ->label('الاختبار')
-                    ->numeric(),
+                    ->required(),
             ]);
     }
 
@@ -42,11 +46,11 @@ class TestQuestionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('question_id')
+                Tables\Columns\TextColumn::make('question.question')
                     ->numeric()
                     ->label('السؤال')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('test_id')
+                Tables\Columns\TextColumn::make('test.test_type')
                     ->numeric()
                     ->label('الاختبار')
                     ->sortable(),
@@ -64,10 +68,13 @@ class TestQuestionResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    
                 ]),
             ]);
     }

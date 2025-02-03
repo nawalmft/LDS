@@ -15,8 +15,6 @@ class Question extends Model
         'points',
     ];
 
-/*************  ✨ Codeium Command ⭐  *************/
-/******  05174e2c-1623-4a49-9879-b12c0a0d31b0  *******/
     public function test(){
         return $this->belongsTo(Test::class);
     }

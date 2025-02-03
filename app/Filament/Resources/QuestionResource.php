@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\QuestionResource\Pages;
 use App\Filament\Resources\QuestionResource\RelationManagers;
+use App\Filament\Resources\QuestionResource\RelationManagers\QuestionAnswerRelationManager;
 use App\Models\Question;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -70,6 +71,8 @@ class QuestionResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -81,7 +84,7 @@ class QuestionResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            QuestionAnswerRelationManager::class
         ];
     }
 

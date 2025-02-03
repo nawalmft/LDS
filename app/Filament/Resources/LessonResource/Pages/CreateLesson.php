@@ -19,15 +19,15 @@ class CreateLesson extends CreateRecord
         return 'اضافة درس';
     }
 
-    protected function mutateFormDataBeforeCreate(array $data): array 
-    {
-        $data['video_type'] = Storage::disk('public')->mimeType($data['video']);
+    // protected function mutateFormDataBeforeCreate(array $data): array 
+    // {
+    //     $data['video_type'] = Storage::disk('public')->mimeType($data['video']);
  
-        return $data;
-    } 
+    //     return $data;
+    // } 
     protected function afterCreate(): void
     {
-        $admins = User::where('role', 'admin')->get();
+        $admins = User::where('role', 'student')->get();
         $this_user = auth()->user();
         Notification::make()
         ->title('تم اضافة درس جديد')

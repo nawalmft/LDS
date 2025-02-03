@@ -12,7 +12,8 @@ class TestAttempt extends Model
     protected $fillable = [
         'test_id',
         'user_id',
-        'question_answer_id'
+        'question_answer_id',
+        'trainee_id',
 
     ];
 
@@ -30,5 +31,8 @@ class TestAttempt extends Model
 
     public function question_answer(){
         return $this->belongsTo(QuestionAnswer::class);
+    }
+    public function trainee(){
+        return $this->belongsTo(Trainee::class);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Filament\User\Resources;
 
 use App\Filament\User\Resources\TestResource\Pages;
 use App\Filament\User\Resources\TestResource\RelationManagers;
+use App\Filament\User\Resources\TestResource\RelationManagers\TestResultRelationManager;
 use App\Models\Test;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -62,7 +63,7 @@ class TestResource extends Resource
                     ->numeric()
                     ->default(0),
                 Forms\Components\DateTimePicker::make('datetime_start')
-                    ->label('تاريخ ووقت البدء')
+                    ->label('تاريخ و وقت البدء')
                     ->required(),
             ]);
     }
@@ -112,6 +113,7 @@ class TestResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('datetime_start')
                     ->dateTime()
+                    ->label('تاريخ و وقت البدء')
                     ->sortable(),
             ])
             ->filters([
@@ -130,7 +132,7 @@ class TestResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            TestResultRelationManager::class
         ];
     }
 

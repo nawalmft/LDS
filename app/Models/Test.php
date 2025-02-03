@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use NunoMaduro\Collision\Adapters\Phpunit\TestResult;
+
 
 class Test extends Model
 {
@@ -13,13 +13,15 @@ class Test extends Model
     protected $fillable = [
         'total_grade',
         'course_id',
+        'score',
         'user_id',
         'test_type',
         'start_date',
         'duration',
         'passing_score',
         'total_questions',
-        'datetime_start'
+        'datetime_start',
+        'trainee_id',
     ];
 
 
@@ -41,5 +43,9 @@ class Test extends Model
 
     public function test_questions(){
         return $this->hasMany(TestQuestion::class);
+        }
+
+        public function trainee(){
+            return $this->belongsTo(Trainee::class);
         }
 }
