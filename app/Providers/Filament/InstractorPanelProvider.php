@@ -26,8 +26,10 @@ class InstractorPanelProvider extends PanelProvider
             ->id('instractor')
             ->path('instractor')
             ->login()
+            ->profile()
+            ->authGuard('web')
             ->colors([
-                'primary' => '#0a4723',
+                'primary' => '#3b898c',
                 'secondary' => '#0a4723',
             ])
             ->discoverResources(in: app_path('Filament/Instractor/Resources'), for: 'App\\Filament\\Instractor\\Resources')

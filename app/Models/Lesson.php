@@ -22,7 +22,8 @@ class Lesson extends Model
         'start_date',
         'lesson_time',      
         'notes',
-        'trainer_id'
+        'trainer_id',
+        'usre_id'
     ];
 
 
@@ -38,8 +39,11 @@ class Lesson extends Model
      return $this->hasMany(LessonPerformanceEvaluation::class);
     }
 
-    public function trainer(){
+    public function trainee(){
         return $this->belongsTo(Trainee::class);
+    }
+    public function user(){
+        return $this->belongsTo(User::class);
     }
 
 }

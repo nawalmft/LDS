@@ -5,10 +5,13 @@ namespace App\Filament\User\Resources;
 use App\Filament\User\Resources\TestResource\Pages;
 use App\Filament\User\Resources\TestResource\RelationManagers;
 use App\Filament\User\Resources\TestResource\RelationManagers\TestResultRelationManager;
+use App\Filament\User\Resources\TestResource\RelationManagers\TestAttemptRelationManager;
+use App\Filament\User\Resources\TestResource\RelationManagers\TestQuestionsRelationManager;
 use App\Models\Test;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -146,16 +149,20 @@ class TestResource extends Resource
             ]);
     }
 
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()->where('trainee_id',auth()->id());
-    }
+    // public static function getEloquentQuery(): Builder
+    // {
+    //     return parent::getEloquentQuery()->where('trainee_id',auth()->id());
+    // }
     public static function getRelations(): array
     {
         return [
-            TestResultRelationManager::class
+            TestResultRelationManager::class,
+            TestAttemptRelationManager::class,
+            TestQuestionsRelationManager::class,
         ];
     }
+
+
 
     public static function getPages(): array
     {

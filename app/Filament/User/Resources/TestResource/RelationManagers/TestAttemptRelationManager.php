@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\TestResource\RelationManagers;
+namespace App\Filament\User\Resources\TestResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -18,10 +18,10 @@ class TestAttemptRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('trainee_id')
-                    ->label('الطالب')
-                    ->options(Trainee::all()->pluck('name', 'id'))
-                    ->required(),
+                Forms\Components\Hidden::make('trainee_id')
+                    ->default(auth()->user()->id)
+                    ->disabled(),
+
                 Forms\Components\Select::make('question_answer_id')
                     ->required()
                     ->label('Answer')

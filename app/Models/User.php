@@ -79,7 +79,9 @@ class User extends Authenticatable implements FilamentUser
     public function lessonperformanceevaluations(){
         return $this->hasMany(LessonPerformanceEvaluation::class);
     }
-
+public function lessons(){
+    return $this->hasMany(Lesson::class);
+}
    
 
     /**

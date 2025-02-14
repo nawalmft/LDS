@@ -33,18 +33,18 @@ class TestResource extends Resource
                     ->options(function () {
                         return \App\Models\Course::all()->pluck('title', 'id');
                     })
-                    ->required(),
+                    ->required('الرجاء اختيار الدورة'),
 
                 Forms\Components\Select::make('user_id')
-                    ->label(' المستخدم')
+                    ->label(' المدرب')
                     ->options(function () {
                         return \App\Models\User::Where('role', 'instructor')->pluck('name', 'id');
                     })
-                    ->required(),
+                    ->required('الرجاء اختيار المدرب'),
 
                 Forms\Components\TextInput::make('duration')
                     ->required()
-                    ->label('مدة الاختبار')
+                    ->label(' مدة الاختبار بالدقائق')
                     ->numeric(),
 
                 Forms\Components\TextInput::make('total_grade')

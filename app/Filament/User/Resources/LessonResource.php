@@ -144,7 +144,7 @@ class LessonResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -156,7 +156,12 @@ class LessonResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('trainee_id',auth()->id());
+        return parent::getEloquentQuery()
+            ->whereIn('enrollment_id', function($query) {
+                $query->select('id')
+                    ->from('enrollments')
+                    ->where('trainee_id', auth()->id());
+            });
     }
 
     public static function getRelations(): array

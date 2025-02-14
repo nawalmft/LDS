@@ -1,5 +1,5 @@
 <img 
 
-src="{{ asset('images/logo.jpeg') }}" class="h-16 w-auto logo"
+src="{{ asset('images/logo.jpeg') }}" class="h-12 w-auto logo"
 alt="logo"
 >

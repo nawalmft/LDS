@@ -35,9 +35,16 @@ class EnrollmentResource extends Resource
                     })
                     ->required(),
                 Forms\Components\Select::make('user_id')
-                    ->label(' المستخدم')
+                    ->label(' المدرب')
                     ->options(function () {
-                        return \App\Models\User::Where('role', 'student')->pluck('name', 'id');
+                        return \App\Models\User::Where('role', 'instructor')->pluck('name', 'id');
+                    })
+                    ->required(),
+
+                Forms\Components\Select::make('trainee_id')
+                    ->label(' الطالب')
+                    ->options(function () {
+                        return \App\Models\Trainee::all()->pluck('name', 'id');
                     })
                     ->required(),
             ]);

@@ -18,6 +18,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use App\Filament\User\Pages\Auth\Register;
+use App\Filament\User\Pages\Auth\EditProfile;
 
 class UserPanelProvider extends PanelProvider
 {
@@ -27,10 +28,12 @@ class UserPanelProvider extends PanelProvider
             ->id('user')
             ->path('user')
             ->login()
+            ->passwordReset()
+            ->profile(EditProfile::class)
             ->authGuard('trainee')
             ->registration(Register::class)
             ->colors([
-                'primary' => '#0a4723',
+                'primary' => '#3b898c',
                 'secondary' => '#0a4723',
             ])
             ->discoverResources(in: app_path('Filament/User/Resources'), for: 'App\\Filament\\User\\Resources')

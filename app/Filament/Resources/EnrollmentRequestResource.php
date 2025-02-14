@@ -48,13 +48,14 @@ class EnrollmentRequestResource extends Resource
                         return \App\Models\User::Where('role', 'student')->pluck('name', 'id');
                     }),
 
-                    Forms\Components\Select::make('trainee_id')
+                    Forms\Components\Select::make('trainee.name')
                     ->required()
-                    ->label(' المتدرب')
+                       // ->disabled()
                     ->options(function () {
                         return \App\Models\Trainee::all()->pluck('name', 'id');
-                    }),
-
+                    })
+                    ->label(' المتدرب'),
+                 
                     
                 Forms\Components\DatePicker::make('preferred_starting_date')
                     ->required()
@@ -93,7 +94,7 @@ class EnrollmentRequestResource extends Resource
                     ->label('الحالة')
                     ->options([
                         'قيد الانتظار' => 'قيد الانتظار',
-                        'تم القبول مبدائيا و في انتظاء الدفع' => 'تم القبول مبدائيا و في انتظاء الدفع',
+                        // 'تم القبول مبدائيا و في انتظاء الدفع' => 'تم القبول مبدائيا و في انتظاء الدفع',
                         'مقبول' => 'مقبول',
                         'مرفوض' => 'مرفوض',
                     ])
@@ -102,7 +103,7 @@ class EnrollmentRequestResource extends Resource
 
                     Forms\Components\TextInput::make('total_price')
                     ->label('السعر الكلي')
-                     ->disabled()
+                    //  ->disabled()
                     ->required(),
             ]);
     }
@@ -117,29 +118,41 @@ class EnrollmentRequestResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
-                    ->label(' المستخدم')
+                    ->label(' المدرب')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('preferred_starting_date')
-                    ->date()
-                    ->label('تاريخ البدء المفضل')
+                Tables\Columns\TextColumn::make('trainee.name')
+                    ->label(' المتدرب')
                     ->sortable(),
+                // Tables\Columns\TextColumn::make('preferred_starting_date')
+                //     ->date()
+                //     ->label('تاريخ البدء المفضل')
+                //     ->sortable(),
                 Tables\Columns\TextColumn::make('preferred_payment_method')
                     ->label('طريقة الدفع المفضلة')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('preferred_time')
-                    ->label('الوقت المفضل')
+                Tables\Columns\TextColumn::make('preferred_daily_hours')
+                    ->label('عدد الساعات اليومية المفضلة')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('preferred_total_hours')
+                    ->label('عدد الساعات الكلية المفضلة')
+                    ->sortable(),
+                // Tables\Columns\TextColumn::make('preferred_time')
+                //     ->label('الوقت المفضل')
+                //     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->label('الحالة')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('total_price')
+                    ->label('السعر الكلي')
+                    ->sortable(),
+                // Tables\Columns\TextColumn::make('created_at')
+                //     ->dateTime()
+                //     ->sortable()
+                //     ->toggleable(isToggledHiddenByDefault: true),
+                // Tables\Columns\TextColumn::make('updated_at')
+                //     ->dateTime()
+                //     ->sortable()
+                //     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //

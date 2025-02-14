@@ -14,6 +14,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Filament\Forms\Set;
+use Filament\Forms\Get;
+use App\Models\Trainee;
 
 class EnrollmentRequestResource extends Resource
 {
@@ -31,19 +34,31 @@ class EnrollmentRequestResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('course_id')
-                    ->options(function () {
-                        return \App\Models\Course::all()->pluck('title', 'id');
-                    })
-                    ->label('الدورة')
-                    ->required(),
+                ->required()
+                ->label(' الدورة')
 
-                Forms\Components\Select::make('user_id')
-                    ->label('المستخدم')
-                    ->options(function () {
-                        return \App\Models\User::all()->pluck('name', 'id');
-                    })
-                    ->required(),
+                ->options(function () {
+                    return \App\Models\Course::all()->pluck('title', 'id');
+                })
+                ->afterStateUpdated(function (Set $set, Get $get) {
+                    self::calculateTotalPrice($get, $set);
+                }),
+                
 
+                  Forms\Components\Select::make('user_id')
+                    ->required()
+                    ->label(' المدرب')
+                    ->options(function () {
+                        return \App\Models\User::Where('role', 'instructor')->pluck('name', 'id');
+                    }),
+
+                    Forms\Components\Select::make('trainee_id')
+                    ->required()
+                    ->label(' المتدرب')
+                    ->options(Trainee::pluck('name', 'id'))
+                    ->default(Trainee::where('name', auth()->user()->name)->value('id'))
+                    ->disabled(),
+                  
                 Forms\Components\DatePicker::make('preferred_starting_date')
                     ->label('تاريخ البدء المفضل')
                     ->required(),
@@ -64,23 +79,31 @@ class EnrollmentRequestResource extends Resource
                     ->required(),
 
                     Forms\Components\TextInput::make('preferred_total_hours')
-                    ->label('عدد الساعات الكلية المفضلة')
-                    ->required(),
+                    ->required()
+                    ->numeric()
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(function (Set $set, Get $get) {
+                        self::calculateTotalPrice($get, $set);
+                    })
+                    ->minValue(4)
+                    ->label(' عدد الساعات الكلية المفضلة'),
 
                 Forms\Components\Select::make('status')
-                    ->options([
-                        'pending' => 'قيد الانتظار',
-                        'accepted' => 'مقبول',
-                        'rejected' => 'مرفوض',
-                    ])
                     ->label('الحالة')
+                    ->options([
+                        'قيد الانتظار' => 'قيد الانتظار',
+                        // 'تم القبول مبدائيا و في انتظاء الدفع' => 'تم القبول مبدائيا و في انتظاء الدفع',
+                        'مقبول' => 'مقبول',
+                        'مرفوض' => 'مرفوض',
+                    ])
                     ->default('قيد الانتظار')
+                    ->disabled()
                     ->required(),
 
-                    // Forms\Components\TextInput::make('total_price')
-                    // ->label('السعر الكلي')
-                    // // ->disabled()
-                    // ->required(),
+                    Forms\Components\TextInput::make('total_price')
+                    ->label('السعر الكلي')
+                     ->disabled()
+                    ->required(),
             ]);
     }
 
@@ -145,10 +168,10 @@ class EnrollmentRequestResource extends Resource
     }
 
     # 
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()->where('trainee_id',auth()->id());
-    }
+    // public static function getEloquentQuery(): Builder
+    // {
+    //     return parent::getEloquentQuery()->where('trainee_id',auth()->id());
+    // }
     public static function getRelations(): array
     {
         return [
@@ -163,5 +186,19 @@ class EnrollmentRequestResource extends Resource
             'create' => Pages\CreateEnrollmentRequest::route('/create'),
             'edit' => Pages\EditEnrollmentRequest::route('/{record}/edit'),
         ];
+    }
+
+    public static function getHourPriceFromCourse(Get $get)
+    {
+        
+        $course = \App\Models\Course::find($get('course_id'));
+        
+        return [
+            'hour_price' => $course->hour_price,
+            'course_fee' => $course->fee,];
+    }
+    public static function calculateTotalPrice(Get $get , Set $set)
+    {
+        $set('total_price',  $get('preferred_total_hours') * self::getHourPriceFromCourse($get)['hour_price'] + self::getHourPriceFromCourse($get)['course_fee']);
     }
 }

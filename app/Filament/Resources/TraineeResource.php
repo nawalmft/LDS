@@ -30,14 +30,14 @@ class TraineeResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->required()
+                    ->required('الرجاء ادخال الاسم')
                     ->label('الاسم')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('email')
-                    ->email()
+                    ->email('الرجاء ادخال بريد الكتروني صالح')
                     ->label('البريد الالكتروني')
                     ->unique(ignoreRecord: true)
-                    ->required()
+                    ->required('الرجاء ادخال بريد الكتروني ')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('phone')
                     ->label('رقم الهاتف')
@@ -45,18 +45,19 @@ class TraineeResource extends Resource
                     ->unique(ignoreRecord: true)
                     ->startsWith('91,92,93,94,95')
                     ->maxLength(9)
-                    ->required(),
+                    ->required('الرجاء ادخال رقم الهاتف'),
                    
                  
                 Forms\Components\FileUpload::make('image')
                     ->label('الصورة')
                     ->directory('trainees')
                     ->image(),
+                    
                 Forms\Components\DatePicker::make('date_of_birth')
                     ->label('تاريخ الميلاد')
                     ->maxDate(now()->subYears(18))
                     ->default(now()->subYears(18))
-                    ->required(),
+                    ->required('الرجاء ادخال تاريخ الميلاد'),
                 Forms\Components\Select::make('gender')
                     ->options([
                         'male' => 'ذكر',
@@ -64,21 +65,26 @@ class TraineeResource extends Resource
                 ])
                     ->label('الجنس')
 
-                    ->required(),
+                    ->required('الرجاء ادخال الجنس'),
                 // Forms\Components\DateTimePicker::make('email_verified_at'),
                 Forms\Components\TextInput::make('password')
-                    ->password()
-                    ->label('كلمة المرور')
-                    ->required()
-                    ->maxLength(255),
+                ->password()
+                ->required(fn(string $context) => $context === 'create')
+                ->maxLength(255)
+                ->dehydrateStateUsing(fn($state) => !empty ($state) ? Hash::make($state) : null)
+                ->dehydrated(fn($state) => !empty ($state))
+
+                ->label('كلمة المرور')
+                ->maxLength(255),
 
                 Forms\Components\TextInput::make('password_confirmation')
-                    ->password()
-                    ->label('تاكيد كلمة المرور')
-                    ->dehydrateStateUsing(fn($state) => !empty ($state) ? Hash::make($state) : null)
-                    ->dehydrated(fn($state) => !empty ($state))
-                    ->required()
-                    ->maxLength(255),
+                ->password()
+                ->required(fn(string $context) => $context === 'create')
+                ->maxLength(255)
+                ->dehydrateStateUsing(fn($state) => !empty ($state) ? Hash::make($state) : null)
+                ->dehydrated(fn($state) => !empty ($state))
+                ->label('تاكيد كلمة المرور')
+                ->maxLength(255),
             ]);
     }
 
@@ -88,6 +94,7 @@ class TraineeResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->label('الاسم')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->label('البريد الالكتروني')

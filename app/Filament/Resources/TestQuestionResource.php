@@ -37,7 +37,7 @@ class TestQuestionResource extends Resource
                 Forms\Components\Select::make('test_id')
                     ->label(' الاختبار')
                     ->options(function () {
-                        return \App\Models\Test::all()->pluck('id', 'id');
+                        return \App\Models\Test::all()->pluck('test_name', 'id');
                     })
                     ->required(),
             ]);

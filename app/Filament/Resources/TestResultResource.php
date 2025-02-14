@@ -32,14 +32,14 @@ class TestResultResource extends Resource
                 ->options(function () {
                     return \App\Models\Test::all()->pluck('test_name', 'id');
                 })
-                ->required(),
+                ->required('الرجاء اختيار الاختبار'),
 
                 Forms\Components\Select::make('user_id')
-                ->label(' المستخدم')
+                ->label(' المدرب')
                 ->options(function () {
                     return \App\Models\User::Where('role', 'student')->pluck('name', 'id');
                 })
-                ->required(),
+                ->required('الرجاء اختيار المدرب'),
                 Forms\Components\Select::make('trainee_id')
                 ->label(' المتدرب')
                 ->options(function () {
@@ -48,21 +48,21 @@ class TestResultResource extends Resource
                 ->required(),
 
                 Forms\Components\TextInput::make('score')
-                ->required()
+                ->required('الرجاء ادخال الدرجة')
                 ->label(' الدرجة')
                 ->numeric(),
 
                 Forms\Components\Select::make('status')
                 ->label(' الحالة')
                 ->options([
-                    'passed' => 'ناجح',
-                    'failed ' => 'راسب ',
+                    'ناجح' => 'ناجح',
+                    'راسب ' => 'راسب ',
                 ])
-                ->required(),
+                ->required('الرجاء اختيار الحالة'),
 
                 Forms\Components\TimePicker::make('time')
                 ->label(' الوقت')
-                ->required(),
+                ->required('الرجاء ادخال الوقت'),
 
             ]);
     }
@@ -71,13 +71,13 @@ class TestResultResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('test.test_type')
+                Tables\Columns\TextColumn::make('test.test_name')
                 ->numeric()
                 ->label(' الاختبار')
                 ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')
                 ->numeric()
-                ->label(' المستخدم')
+                ->label(' المدرب')
                 ->sortable(),
                 Tables\Columns\TextColumn::make('score')
                 ->numeric()

@@ -19,10 +19,29 @@ class LessonperformanceevaluationsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('grade')
-                    ->label('الدرجة')
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\Select::make('trainee_id')
+                ->label('المتدرب')
+                ->options(function () {
+                    return \App\Models\Trainee::all()->pluck('name', 'id');
+                })
+            ->required(),
+
+            Forms\Components\Select::make('course_criteria_id')
+                ->label(' معيار الدورة')
+                ->options(function () {
+                    return \App\Models\CoursePerformanceCriteria::all()->pluck('criteria', 'id');
+                })
+                ->required(),
+            Forms\Components\Select::make('lesson_id')
+                ->label(' الدرس')
+                ->options(function () {
+                    return \App\Models\Lesson::all()->pluck('title', 'id');
+                })
+                ->required(),
+            Forms\Components\TextInput::make('grade')
+                ->required()
+                ->label('الدرجة')
+                ->numeric(), 
             ]);
     }
 

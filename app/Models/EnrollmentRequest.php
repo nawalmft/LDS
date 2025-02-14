@@ -26,6 +26,11 @@ class EnrollmentRequest extends Model
         return $this->belongsTo(Course::class);
     }
 
+    public function trainee(){
+        return $this->belongsTo(Trainee::class);
+    }
+
+
     public function user(){
         return $this->belongsTo(User::class);
     }

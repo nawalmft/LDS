@@ -32,19 +32,23 @@ class UserResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->required()
+                    ->required('الرجاء ادخال الاسم')
                     ->label('الاسم')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->required()
+                    ->email('الرجاء ادخال بريد الكتروني صالح')
+                    ->required('الرجاء ادخال بريد الكتروني ')
                     ->label('البريد الالكتروني')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('phone')
-                    ->tel()
-                    ->required()
+                    
+                    Forms\Components\TextInput::make('phone')
                     ->label('رقم الهاتف')
-                    ->maxLength(255),
+                    ->tel()
+                    ->unique(ignoreRecord: true)
+                    ->startsWith('91,92,93,94,95')
+                    ->maxLength(9)
+                    ->required('الرجاء ادخال رقم الهاتف'),
+
                 Forms\Components\FileUpload::make('image')
                     ->image()
                     ->label('الصورة'),
@@ -54,28 +58,29 @@ class UserResource extends Resource
                     ->label('صورة رخصة القيادة'),
                 
                 Forms\Components\TextInput::make('years_of_driving_experience')
-                    ->required()
                     ->label(' عدد سنوات الخبرة في القيادة')
                     ->numeric(),
 
                 Forms\Components\Select::make('role')
-                    ->required()
+                    ->required('الرجاء اختيار صلاحية المستخدم')
                     ->label('الصلاحية')
                     ->options([
                         'admin' => 'ادمن',
-                        'student' => 'طالب',
                         'instructor' => 'مدرب',
                     ])
                     ->default('user'),
                 Forms\Components\DateTimePicker::make('date_of_birth')
-                    ->label('تاريخ الميلاد'),
+                    ->label('تاريخ الميلاد')
+                    ->maxDate(now()->subYears(18))
+                    ->default(now()->subYears(18))
+                    ->required('الرجاء ادخال تاريخ الميلاد'),
                 Forms\Components\Select::make('gender')
                     ->label('الجنس')
                     ->options([
                         'male' => 'ذكر',
                         'female' => 'انثى',
                     ])
-                    ->required(),
+                    ->required('الرجاء اختيار الجنس'),
                 Forms\Components\TextInput::make('password')
                     ->password()
                     ->required(fn(string $context) => $context === 'create')

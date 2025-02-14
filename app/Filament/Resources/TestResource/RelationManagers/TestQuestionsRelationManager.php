@@ -9,7 +9,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-
+use App\Models\Question;
 class TestQuestionsRelationManager extends RelationManager
 {
     protected static string $relationship = 'test_questions';
@@ -18,9 +18,11 @@ class TestQuestionsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('question_id')
+                Forms\Components\Select::make('question_id')
+                    ->label('السؤال')
+                    ->options(Question::all()->pluck('question', 'id'))
                     ->required()
-                    ->maxLength(255),
+                    ,
             ]);
     }
 
