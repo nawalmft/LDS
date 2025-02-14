@@ -6,12 +6,14 @@ use App\Filament\User\Resources\EnrollmentRequestResource\Pages;
 use App\Filament\User\Resources\EnrollmentRequestResource\RelationManagers;
 use App\Models\EnrollmentRequest;
 use Filament\Forms;
+use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class EnrollmentRequestResource extends Resource
 {
@@ -72,12 +74,13 @@ class EnrollmentRequestResource extends Resource
                         'rejected' => 'مرفوض',
                     ])
                     ->label('الحالة')
+                    ->default('قيد الانتظار')
                     ->required(),
 
-                    Forms\Components\TextInput::make('total_price')
-                    ->label('السعر الكلي')
-                    ->disabled()
-                    ->required(),
+                    // Forms\Components\TextInput::make('total_price')
+                    // ->label('السعر الكلي')
+                    // // ->disabled()
+                    // ->required(),
             ]);
     }
 
@@ -117,6 +120,22 @@ class EnrollmentRequestResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\Action::make('printInvoice')
+                    ->label('طباعة الفاتورة')
+                    ->icon('heroicon-o-printer')
+                    ->action(function (EnrollmentRequest $record) {
+                        return response()->streamDownload(
+                        function() use ($record) {
+                            echo PDF::loadView('enrollment.invoice', [
+                                'record' => $record->load(['user', 'course'])
+                            ])->stream();
+                    },
+                      "invoice-{$record->id}.pdf"
+                );
+
+             }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -126,10 +145,10 @@ class EnrollmentRequestResource extends Resource
     }
 
     # 
-    // public static function getEloquentQuery(): Builder
-    // {
-    //     return parent::getEloquentQuery()->where('user_id',auth()->id());
-    // }
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->where('trainee_id',auth()->id());
+    }
     public static function getRelations(): array
     {
         return [

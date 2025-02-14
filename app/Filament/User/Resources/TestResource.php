@@ -29,10 +29,12 @@ class TestResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('course_id')
+                Forms\Components\Select::make('course_id')
                     ->required()
-                    ->label('الكورس')
-                    ->numeric(),
+                    ->options(function () {
+                        return \App\Models\Course::all()->pluck('title', 'id');
+                    })
+                    ->label('الدورة'),
                 Forms\Components\Select::make('user_id')
                     ->required()
                    ->options(function () {
@@ -40,6 +42,7 @@ class TestResource extends Resource
                     })
                     ->label('المدرب')
                     ->disabled(),
+              
                 Forms\Components\TextInput::make('duration')
                     ->required()
                     ->label('المدة')
@@ -85,7 +88,7 @@ class TestResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('course.title')
                     ->numeric()
-                    ->label('الكورس')
+                    ->label('الدورة')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
@@ -143,6 +146,10 @@ class TestResource extends Resource
             ]);
     }
 
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->where('trainee_id',auth()->id());
+    }
     public static function getRelations(): array
     {
         return [

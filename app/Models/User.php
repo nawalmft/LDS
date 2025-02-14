@@ -7,8 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -25,9 +27,25 @@ class User extends Authenticatable
         'role',
         'date_of_birth',
         'image',
+        'gender',
         'years_of_driving_experience',
         'driving_license_image',
     ];
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->isAdmin() || $this->isInstructor();
+    }
+
+    public function isInstructor(): bool
+    {
+        return $this->role === 'instructor';
+    }
+    
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
 
     public function course(){
         return $this->hasMany(Course::class);

@@ -40,6 +40,11 @@ class CourseResource extends Resource
                     ->required()
                     ->label('رسوم الإشتراك في الدورة')
                     ->numeric(),
+                    
+                Forms\Components\TextInput::make('hour_price')
+                    ->required()
+                    ->label('سعر الساعة')
+                    ->numeric(),
                 Forms\Components\TextInput::make('course_duration')
                     ->required()
                     ->label('  عدد الأيام الموصى بها في الدورة')

@@ -45,6 +45,13 @@ class LessonPerformanceEvaluationResource extends Resource
                     ->required()
                     ->label('الدرجة')
                     ->numeric(),
+                
+                Forms\Components\Select::make('trainee_id')
+                    ->required()
+                    ->label('المتدرب')
+                    ->options(function () {
+                        return \App\Models\Trainee::all()->pluck('name', 'id');
+                })
             ]);
     }
 

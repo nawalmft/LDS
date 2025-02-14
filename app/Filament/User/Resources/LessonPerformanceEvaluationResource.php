@@ -83,11 +83,11 @@ class LessonPerformanceEvaluationResource extends Resource
     }
 
 
-    // public static function getEloquentQuery(): Builder
-    // {
-    //     // the lesson_id should be the user id
-    //     return parent::getEloquentQuery()->where('lesson_id',auth()->user()->id);
-    // }
+    public static function getEloquentQuery(): Builder
+    {
+        // the lesson_id should be the user id
+        return parent::getEloquentQuery()->where('trainee_id',auth()->user()->id);
+    }
     public static function getRelations(): array
     {
         return [

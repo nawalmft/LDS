@@ -53,6 +53,11 @@ class QuestionResource extends Resource
                 Tables\Columns\TextColumn::make('question_level')
                     ->label('مستوى السؤال')
                     ->sortable(),
+
+                Tables\Columns\TextColumn::make('question')
+                    ->label('السؤال')
+                    ->sortable(),
+                    
                 Tables\Columns\TextColumn::make('points')
                     ->numeric()
                     ->label('النقاط')

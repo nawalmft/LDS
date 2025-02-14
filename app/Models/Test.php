@@ -16,6 +16,7 @@ class Test extends Model
         'score',
         'user_id',
         'test_type',
+        'test_name',
         'start_date',
         'duration',
         'passing_score',

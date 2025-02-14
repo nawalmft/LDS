@@ -13,7 +13,7 @@ class ListTrainees extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()->label('اضافة بيانات متدرب'),
         ];
     }
 }

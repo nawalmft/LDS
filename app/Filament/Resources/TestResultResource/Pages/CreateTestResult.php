@@ -8,6 +8,7 @@ use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Contracts\Support\Htmlable;
 use App\Models\User;
 use Filament\Notifications\Notification;
+use App\Models\Trainee;
 
 class CreateTestResult extends CreateRecord
 {
@@ -15,18 +16,18 @@ class CreateTestResult extends CreateRecord
 
     public function getTitle(): string
     {
-        return 'نتيجة الاختبار';
+        return ' إضافة نتيجةاختبار';
     }
 
     protected function afterCreate(): void
     {
-        $admins = User::where('role', 'student')->get();
+        $trainees = Trainee::all();// get all traees 
         $this_user = auth()->user();
         Notification::make()
-        ->title('تم اضافة نتيجة جديدة')
-        ->body('تم اضافة نتيجة جديدة بنجاح من قبل ' . $this_user->name)
-        ->icon('heroicon-o-academic-cap')
-        ->success()
-        ->sendToDatabase($admins);
+            ->title('تم اضافة  نتيجةاختبار ')
+            ->body('تم اضافة نتيجة  اختبار  ' .  ' بنجاح من قبل ' . $this_user->name)
+            ->icon('heroicon-o-academic-cap')
+            ->success()
+            ->sendToDatabase($trainees);
     }
 }

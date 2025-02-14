@@ -26,6 +26,14 @@ class LessonPerformanceEvaluationResource extends Resource
     {
         return $form
             ->schema([
+
+                Forms\Components\Select::make('trainee_id')
+                    ->label('المتدرب')
+                    ->options(function () {
+                        return \App\Models\Trainee::all()->pluck('name', 'id');
+                    })
+                ->required(),
+
                 Forms\Components\Select::make('course_criteria_id')
                     ->label(' معيار الدورة')
                     ->options(function () {

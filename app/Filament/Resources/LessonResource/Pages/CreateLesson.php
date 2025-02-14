@@ -9,6 +9,7 @@ use Illuminate\Contracts\Support\Htmlable;
 use App\Models\User;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Trainee;
 
 class CreateLesson extends CreateRecord
 {
@@ -27,13 +28,13 @@ class CreateLesson extends CreateRecord
     // } 
     protected function afterCreate(): void
     {
-        $admins = User::where('role', 'student')->get();
+        $trainees = Trainee::where('id', $this->record->trainee_id)->get();
         $this_user = auth()->user();
         Notification::make()
         ->title('تم اضافة درس جديد')
         ->body('نم إضافة درس جديد بإسم' . $this->record->title . ' بنجاح من قبل ' . $this_user->name)
         ->icon('heroicon-o-academic-cap')
         ->success()
-        ->sendToDatabase($admins);
+        ->sendToDatabase($trainees);
  }
 }

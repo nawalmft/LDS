@@ -8,6 +8,7 @@ use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Contracts\Support\Htmlable;
 use App\Models\User;
 use Filament\Notifications\Notification;
+use App\Models\Trainee;
 
 class CreateCoursePerformanceCriteria extends CreateRecord
 {
@@ -20,13 +21,20 @@ class CreateCoursePerformanceCriteria extends CreateRecord
 
     protected function afterCreate(): void
     {
-        $admins = User::where('role', 'admin')->get();
+        $instructors = User::where('role', 'instructor')->get();
+        $trainees = Trainee::all();// get all traees 
         $this_user = auth()->user();
         Notification::make()
-            ->title('تم اضافة معيار جديد')
-            ->body('تم اضافة معيار جديد بنجاح بإسم '. $this->record->criteria. ' من قبل ' . $this_user->name)
+            ->title('تم اضافة معيار دورة  جديد')
+            ->body('تم اضافة دورة جديدة بإسم ' . $this->record->criteria . ' بنجاح من قبل ' . $this_user->name)
             ->icon('heroicon-o-academic-cap')
             ->success()
-            ->sendToDatabase($admins);
+            ->sendToDatabase($instructors);
+        Notification::make()
+            ->title('تم اضافة  معيار دورة  جديد')
+            ->body('تم اضافة  معيار دورة جديدة بإسم ' . $this->record->criteria . ' بنجاح من قبل ' . $this_user->name)
+            ->icon('heroicon-o-academic-cap')
+            ->success()
+            ->sendToDatabase($trainees);
     }
 }

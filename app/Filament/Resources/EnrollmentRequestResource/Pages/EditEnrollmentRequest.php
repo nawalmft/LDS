@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\EnrollmentRequestResource\Pages;
 
 use App\Filament\Resources\EnrollmentRequestResource;
+use App\Models\Trainee;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 use App\Models\User;
@@ -27,13 +28,12 @@ class EditEnrollmentRequest extends EditRecord
 
     protected function afterSave(): void
     {
-        $student = User::where('id', $this->record->user_id)->get();
-
+        $trainees = Trainee::where('id', $this->record->trainee_id)->get();
         Notification::make()
             ->title('تم تغير حالة طلب التسجيل')
             ->body('تم تغير حالة طلب التسجيل بنجاح ')
             ->icon('heroicon-o-academic-cap')
             ->success()
-            ->sendToDatabase($student);
+            ->sendToDatabase($trainees);
     }
 }

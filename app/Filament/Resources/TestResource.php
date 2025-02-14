@@ -51,29 +51,42 @@ class TestResource extends Resource
                     ->required()
                     ->label('الدرجة الكلية')
                     ->numeric(),
-                
-                Forms\Components\DateTimePicker::make('date_time')
-                    ->label('تاريخ ووقت الاختبار')
-                    ->required(),
 
-                Forms\Components\Select::make('test_type')
-                    ->label('نوع الاختبار')
-                    ->options([
-                        'written ' => '  written ',
-                        ' on-road ' => 'on-road  ',
-
-                    ])
-                    ->required(),
-
-            Forms\Components\TextInput::make('total_questions')
-                ->required()
-                ->label('عدد الاسئلة')   
-                ->numeric(),
-
+                    
                 Forms\Components\TextInput::make('passing_score')
                 ->required()
                 ->label('درجة النجاح')   
                 ->numeric(),
+
+                Forms\Components\Select::make('test_type')
+                ->label('نوع الاختبار')
+                ->options([
+                    'written ' => '  written ',
+                    ' on-road ' => 'on-road  ',
+
+                ])
+                ->required(),
+                Forms\Components\TextInput::make('test_name')
+                ->required()
+                ->label('اسم الاختبار')
+                ->maxLength(255),
+                
+            Forms\Components\TextInput::make('total_questions')
+            ->required()
+            ->label('عدد الاسئلة')   
+            ->numeric(),
+                
+            Forms\Components\DateTimePicker::make('date_time')
+                    ->label('تاريخ ووقت الاختبار')
+                    ->required(),
+            
+            Forms\Components\Select::make('trainee_id')
+            ->label(' المتدرب')    
+            ->options(function () {
+                return \App\Models\Trainee::all()->pluck('name', 'id');
+            })
+
+
             
 
             ]);

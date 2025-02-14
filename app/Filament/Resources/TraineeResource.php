@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Hash;
 
 class TraineeResource extends Resource
 {
@@ -34,21 +35,48 @@ class TraineeResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('email')
                     ->email()
+                    ->label('البريد الالكتروني')
+                    ->unique(ignoreRecord: true)
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('phone')
+                    ->label('رقم الهاتف')
                     ->tel()
-                    ->required()
-                    ->maxLength(255),
+                    ->unique(ignoreRecord: true)
+                    ->startsWith('91,92,93,94,95')
+                    ->maxLength(9)
+                    ->required(),
+                   
+                 
                 Forms\Components\FileUpload::make('image')
+                    ->label('الصورة')
+                    ->directory('trainees')
                     ->image(),
-                Forms\Components\TextInput::make('date_of_birth')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('gender')
-                    ->maxLength(255),
-                Forms\Components\DateTimePicker::make('email_verified_at'),
+                Forms\Components\DatePicker::make('date_of_birth')
+                    ->label('تاريخ الميلاد')
+                    ->maxDate(now()->subYears(18))
+                    ->default(now()->subYears(18))
+                    ->required(),
+                Forms\Components\Select::make('gender')
+                    ->options([
+                        'male' => 'ذكر',
+                        'female' => 'انثى',
+                ])
+                    ->label('الجنس')
+
+                    ->required(),
+                // Forms\Components\DateTimePicker::make('email_verified_at'),
                 Forms\Components\TextInput::make('password')
                     ->password()
+                    ->label('كلمة المرور')
+                    ->required()
+                    ->maxLength(255),
+
+                Forms\Components\TextInput::make('password_confirmation')
+                    ->password()
+                    ->label('تاكيد كلمة المرور')
+                    ->dehydrateStateUsing(fn($state) => !empty ($state) ? Hash::make($state) : null)
+                    ->dehydrated(fn($state) => !empty ($state))
                     ->required()
                     ->maxLength(255),
             ]);
@@ -59,19 +87,26 @@ class TraineeResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('الاسم')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
+                    ->label('البريد الالكتروني')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
+                    ->label('رقم الهاتف')
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('image'),
+                Tables\Columns\ImageColumn::make('image')
+                    ->label('الصورة'),
                 Tables\Columns\TextColumn::make('date_of_birth')
+                    ->label('تاريخ الميلاد')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('gender')
+                    ->label('الجنس')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('email_verified_at')
-                    ->dateTime()
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('email_verified_at')
+                //     ->dateTime()
+                //     ->label(' التحقق من البريد الالكتروني')
+                //     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -86,6 +121,8 @@ class TraineeResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -12,6 +12,7 @@ class Course extends Model
     'title',
     'description',
     'fee',
+    'hour_price',
     'course_duration',
     'hours_per_day',
     'transmission_type',];

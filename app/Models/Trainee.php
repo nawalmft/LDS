@@ -3,11 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasAvatar;
+use Filament\Panel;
 
-class Trainee extends Model
+
+class Trainee extends Authenticatable implements FilamentUser
 {
-    use HasFactory;
+    use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
     'name',
@@ -20,6 +26,15 @@ class Trainee extends Model
     'email_verified_at',
     ];
 
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->isTrainee();
+    }
+
+    public function isTrainee(): bool
+    {
+        return true;
+    }
 
     public function enrollment()
     {

@@ -30,7 +30,7 @@ class TestResultResource extends Resource
                 Forms\Components\Select::make('test_id')
                 ->label(' الاختبار')
                 ->options(function () {
-                    return \App\Models\Test::all()->pluck('id', 'id');
+                    return \App\Models\Test::all()->pluck('test_name', 'id');
                 })
                 ->required(),
 
@@ -38,6 +38,12 @@ class TestResultResource extends Resource
                 ->label(' المستخدم')
                 ->options(function () {
                     return \App\Models\User::Where('role', 'student')->pluck('name', 'id');
+                })
+                ->required(),
+                Forms\Components\Select::make('trainee_id')
+                ->label(' المتدرب')
+                ->options(function () {
+                    return \App\Models\Trainee::all()->pluck('name', 'id');
                 })
                 ->required(),
 

@@ -4,6 +4,7 @@ namespace App\Filament\Instractor\Resources;
 
 use App\Filament\Instractor\Resources\TestResource\Pages;
 use App\Filament\Instractor\Resources\TestResource\RelationManagers;
+use App\Filament\Instractor\Resources\TestResource\RelationManagers\TestQuestionsRelationManager;
 use App\Filament\Instractor\Resources\TestResource\RelationManagers\TestResultRelationManager;
 use App\Models\Test;
 use Filament\Forms;
@@ -36,7 +37,7 @@ class TestResource extends Resource
                     })
                     ->required(),
                 Forms\Components\Select::make('user_id')
-                    ->label('الطالب')
+                    ->label('المدرب')
                     ->options(function () {
                         return \App\Models\User::Where('role', 'instructor')->pluck('name', 'id');
                     })
@@ -61,6 +62,10 @@ class TestResource extends Resource
                         ' on-road ' => 'on-road  ',
                     ])
                     ->required(),
+                Forms\Components\TextInput::make('test_name')
+                    ->required()
+                    ->label('اسم الاختبار'),
+
                 Forms\Components\TextInput::make('total_questions')
                     ->required()
                     ->label('عدد الاسئلة')
@@ -135,6 +140,7 @@ class TestResource extends Resource
     {
         return [
             TestResultRelationManager::class
+    
         ];
     }
 

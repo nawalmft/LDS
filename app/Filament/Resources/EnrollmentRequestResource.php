@@ -12,6 +12,10 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Filament\Forms\Set;
+use Filament\Forms\Get;
 
 class EnrollmentRequestResource extends Resource
 {
@@ -29,17 +33,29 @@ class EnrollmentRequestResource extends Resource
                 Forms\Components\Select::make('course_id')
                     ->required()
                     ->label(' الدورة')
+
                     ->options(function () {
                         return \App\Models\Course::all()->pluck('title', 'id');
+                    })
+                    ->afterStateUpdated(function (Set $set, Get $get) {
+                        self::calculateTotalPrice($get, $set);
                     }),
                     
                 Forms\Components\Select::make('user_id')
                     ->required()
-                    ->label(' المستخدم')
+                    ->label(' المدرب')
                     ->options(function () {
                         return \App\Models\User::Where('role', 'student')->pluck('name', 'id');
                     }),
 
+                    Forms\Components\Select::make('trainee_id')
+                    ->required()
+                    ->label(' المتدرب')
+                    ->options(function () {
+                        return \App\Models\Trainee::all()->pluck('name', 'id');
+                    }),
+
+                    
                 Forms\Components\DatePicker::make('preferred_starting_date')
                     ->required()
                     ->label('تاريخ البدء المفضل'),
@@ -66,22 +82,26 @@ class EnrollmentRequestResource extends Resource
                     Forms\Components\TextInput::make('preferred_total_hours')
                     ->required()
                     ->numeric()
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(function (Set $set, Get $get) {
+                        self::calculateTotalPrice($get, $set);
+                    })
                     ->minValue(4)
                     ->label(' عدد الساعات الكلية المفضلة'),
 
                 Forms\Components\Select::make('status')
                     ->label('الحالة')
                     ->options([
-                        'pending' => 'قيد الانتظار',
-                        'accepted' => 'مقبول',
-                        'rejected' => 'مرفوض',
+                        'قيد الانتظار' => 'قيد الانتظار',
+                        'تم القبول مبدائيا و في انتظاء الدفع' => 'تم القبول مبدائيا و في انتظاء الدفع',
+                        'مقبول' => 'مقبول',
+                        'مرفوض' => 'مرفوض',
                     ])
                     ->default('active')
                     ->required(),
 
                     Forms\Components\TextInput::make('total_price')
                     ->label('السعر الكلي')
-                    ->numeric()
                      ->disabled()
                     ->required(),
             ]);
@@ -107,7 +127,7 @@ class EnrollmentRequestResource extends Resource
                     ->label('طريقة الدفع المفضلة')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('preferred_time')
-                    ->label('وقت المفضل')
+                    ->label('الوقت المفضل')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->label('الحالة')
@@ -127,6 +147,19 @@ class EnrollmentRequestResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
+                Tables\Actions\Action::make('printInvoice')
+                ->label('طباعة الفاتورة')
+                ->icon('heroicon-o-printer')
+                ->action(function (EnrollmentRequest $record) {
+                    return response()->streamDownload(
+                        function () use ($record) {
+                            echo PDF::loadView('enrollment.invoice', [
+                                'record' => $record->load(['user', 'course'])
+                            ])->stream();
+                        },
+                        "invoice-{$record->id}.pdf"
+                    );
+                }), 
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
@@ -150,5 +183,20 @@ class EnrollmentRequestResource extends Resource
             'create' => Pages\CreateEnrollmentRequest::route('/create'),
             'edit' => Pages\EditEnrollmentRequest::route('/{record}/edit'),
         ];
+    }
+
+
+    public static function getHourPriceFromCourse(Get $get)
+    {
+        
+        $course = \App\Models\Course::find($get('course_id'));
+        
+        return [
+            'hour_price' => $course->hour_price,
+            'course_fee' => $course->fee,];
+    }
+    public static function calculateTotalPrice(Get $get , Set $set)
+    {
+        $set('total_price',  $get('preferred_total_hours') * self::getHourPriceFromCourse($get)['hour_price'] + self::getHourPriceFromCourse($get)['course_fee']);
     }
 }

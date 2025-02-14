@@ -154,10 +154,10 @@ class LessonResource extends Resource
             ]);
     }
 
-    // public static function getEloquentQuery(): Builder
-    // {
-    //     return parent::getEloquentQuery()->where('enrollment_id',auth()->id());
-    // }
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->where('trainee_id',auth()->id());
+    }
 
     public static function getRelations(): array
     {

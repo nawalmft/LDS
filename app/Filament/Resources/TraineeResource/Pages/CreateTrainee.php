@@ -9,4 +9,8 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateTrainee extends CreateRecord
 {
     protected static string $resource = TraineeResource::class;
+    public function getTitle(): string
+    {
+        return ' إضافة متدرب';
+    }
 }

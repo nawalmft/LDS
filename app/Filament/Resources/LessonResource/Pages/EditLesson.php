@@ -28,7 +28,7 @@ class EditLesson extends EditRecord
 
     protected function afterSave(): void
     {
-   $admins = User::where('role','admin')->get();
+   $trainees = User::where('id', $this->record->trainee_id)->get();
    $this_user = auth()->user();
    Notification::make()
    ->title('تم تعديل درس')
@@ -39,6 +39,6 @@ class EditLesson extends EditRecord
        Action::make('عرض')
        ->url(LessonResource::getUrl('edit', ['record' => $this->record]))
    ])
-   ->sendToDatabase($admins);
+   ->sendToDatabase($trainees);
     }
 }
